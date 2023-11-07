@@ -1,45 +1,38 @@
 #include "main.h"
 
-// #define CAN_IN_CS 14
-// #define CAN_IN_INT 23
+MCP2515 can(CAN_CHIP_SELECT, CAN_INTERRUPT);
 
-// #define CAN_OUT_CS 13
-// #define CAN_OUT_INT 24
-
-// MCP2515Class can_in;
-// MCP2515Class can_out;
+CAN_FRAME message;
+CAN_FRAME output;
 
 VehicleState state;
 
 unsigned long lastUpdate = 0;
 uint16_t REFRESH_PERIOD = 10;
 
+void handleInterrupt() {
+  can.intHandler();
+}
+
 void setup() {
-  pinMode(CAN_CHIP_SELECT, OUTPUT);
-  // can_in.setPins(CAN_IN_CS, CAN_IN_INT);
-  // can_out.setPins(CAN_OUT_CS, CAN_OUT_INT);
+  // pinMode(CAN_CHIP_SELECT, OUTPUT);
   Serial.begin(115200);
 
   // start the CAN bus at 500 kbps
-  // if (!can_in.begin(500E3)) {
-  //   while (1) {
-  //     delay(1000);
-  //     Serial.println("Starting CAN input failed!");
-  //   }
-  // }
+  if (!can.begin(500)) {
+    while (1) {
+      delay(1000);
+      Serial.println("Starting CAN input failed!");
+    }
+  }
 
   // if (!can_out.begin(500E3)) {
   //   Serial.println("Starting CAN output failed");
   // }
 
-  if(Canbus.init(CANSPEED_500))  //Initialise MCP2515 CAN controller at the specified speed
-    Serial.println("CAN Init ok");
-  else
-    Serial.println("Can't init CAN");
+  attachInterrupt(CAN_INTERRUPT, handleInterrupt, FALLING);
+  can.InitFilters(true);
 }
-
-// Message *message = NULL;
-tCAN message;
 
 // void loop() {
 //   if (mcp2515_check_message()) 
@@ -63,18 +56,15 @@ tCAN message;
 
 void loop() {
   // try to parse packet
-  if (mcp2515_check_message()) {
-    if (mcp2515_get_message(&message)) {
-      updateVehicleState();
-    }
-  }
+  if (can.GetRXFrame(message))
+    updateVehicleState();
 
-  auto now = millis();
-  if (now - lastUpdate >= REFRESH_PERIOD) {
-    // send out updates;
-    sendVehicleState();
-    lastUpdate = now;
-  }
+  // auto now = millis();
+  // if (now - lastUpdate >= REFRESH_PERIOD) {
+  //   // send out updates;
+  //   sendVehicleState();
+  //   lastUpdate = now;
+  // }
 }
 
 // void buildPacket(Message *message) {
@@ -92,7 +82,7 @@ void loop() {
 
 bool updateVehicleState() {
   bool updated = false;
-  uint8_t *data = message.data;
+  uint8_t *data = message.data.bytes;
   // switch (message.id) {
   //   case HALTECH_MESSAGE_360:
   //     state.rpm = data[0];
@@ -128,19 +118,19 @@ bool updateVehicleState() {
       state.rpm = ((data[5] - 0x80) * 256) + data[4];
       // Serial.printf("rpm: %d\n", state.rpm);
       break;
-    // default:
-    //   Serial.printf("[%d] - unknown message\n", message.id);
+    default:
+      Serial.printf("[%d] - unknown message\n", message.id);
   }
 
   return updated;
 }
 
 void sendVehicleState() {
-  tCAN send;
-
-  send.id = S2000_ENGINE_STATUS;
-  send.header.length = 7;
-  send.data[1] = state.coolantTemperature;
-  send.data[5] = state.rpm;
-  mcp2515_send_message(&send);
+  output.id = S2000_ENGINE_STATUS;
+  output.length = 8;
+  output.extended = true;
+  output.data.byte[1] = state.coolantTemperature;
+  output.data.byte[2] = state.ambientTemperature;
+  output.data.byte[5] = state.rpm;
+  can.sendFrame(output);
 }

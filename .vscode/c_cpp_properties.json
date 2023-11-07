@@ -10,8 +10,8 @@
             "includePath": [
                 "C:/Users/Nishanth/dev/s2k/include",
                 "C:/Users/Nishanth/dev/s2k/src",
-                "C:/Users/Nishanth/dev/s2k/lib/Canbus",
-                "C:/Users/Nishanth/dev/s2k/.pio/libdeps/s2k/CAN/src",
+                "C:/Users/Nishanth/dev/s2k/.pio/libdeps/s2k/MCP2515/src",
+                "C:/Users/Nishanth/dev/s2k/.pio/libdeps/s2k/can_common/src",
                 "C:/Users/Nishanth/.platformio/packages/framework-arduino-avr-minicore/libraries/SPI/src",
                 "C:/Users/Nishanth/.platformio/packages/framework-arduino-avr-minicore/cores/MiniCore",
                 "C:/Users/Nishanth/.platformio/packages/framework-arduino-avr-minicore/variants/standard",
@@ -29,8 +29,8 @@
                 "path": [
                     "C:/Users/Nishanth/dev/s2k/include",
                     "C:/Users/Nishanth/dev/s2k/src",
-                    "C:/Users/Nishanth/dev/s2k/lib/Canbus",
-                    "C:/Users/Nishanth/dev/s2k/.pio/libdeps/s2k/CAN/src",
+                    "C:/Users/Nishanth/dev/s2k/.pio/libdeps/s2k/MCP2515/src",
+                    "C:/Users/Nishanth/dev/s2k/.pio/libdeps/s2k/can_common/src",
                     "C:/Users/Nishanth/.platformio/packages/framework-arduino-avr-minicore/libraries/SPI/src",
                     "C:/Users/Nishanth/.platformio/packages/framework-arduino-avr-minicore/cores/MiniCore",
                     "C:/Users/Nishanth/.platformio/packages/framework-arduino-avr-minicore/variants/standard",

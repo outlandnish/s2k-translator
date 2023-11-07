@@ -7,7 +7,7 @@
 // coolant temperature = byte 1
 // ambient temperature = byte 2
 // engine RPM = bytes 5/6
-#define S2000_ENGINE_STATUS 0x300
+#define S2000_ENGINE_STATUS 300
 
 // wheel speeds = bytes 6/5
 #define S2000_WHEEL_SPEED 0x448
