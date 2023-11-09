@@ -129,8 +129,8 @@ void sendVehicleState() {
   output.id = S2000_ENGINE_STATUS;
   output.length = 8;
   output.extended = true;
-  output.data.byte[1] = state.coolantTemperature;
-  output.data.byte[2] = state.ambientTemperature;
-  output.data.byte[5] = state.rpm;
+  output.data.byte[0] = state.coolantTemperature + 40;
+  output.data.byte[1] = state.ambientTemperature + 40;
+  output.data.byte[4] = state.rpm;
   can.sendFrame(output);
 }

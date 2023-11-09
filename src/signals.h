@@ -1,8 +1,8 @@
 // brake pedal pressure = byte 3
-#define S2000_BRAKE_PEDAL_RESSURE 0x106
+#define S2000_BRAKE_PEDAL_RESSURE 106
 
 // throttle pedal position = byte 1
-#define S2000_THROTTLE_PEDAL_POSITION 0x170
+#define S2000_THROTTLE_PEDAL_POSITION 170
 
 // coolant temperature = byte 1
 // ambient temperature = byte 2
@@ -10,7 +10,7 @@
 #define S2000_ENGINE_STATUS 300
 
 // wheel speeds = bytes 6/5
-#define S2000_WHEEL_SPEED 0x448
+#define S2000_WHEEL_SPEED 448
 
 // steering wheel position = bytes 1/2
 // lateral acceleration = byte 3
